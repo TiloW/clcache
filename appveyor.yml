@@ -42,6 +42,13 @@ install:
   - pip install codecov
   - coverage --version
 
+  # Setup venv for clcachesrv
+  - cd server
+  - python -m venv .
+  - Scripts\pip install -r requirements.txt
+  - Scripts\pip install pylint
+  - cd..
+
 build_script:
   - python clcache.py --help
   - python clcache.py -s
@@ -49,6 +56,9 @@ build_script:
   - pylint --rcfile=.pylintrc unittests.py
   - pylint --rcfile=.pylintrc integrationtests.py
   - pylint --rcfile=.pylintrc performancetests.py
+  - cd server
+  - Scripts\pylint --rcfile=..\.pylintrc clcachesrv.py
+  - cd ..
 
 test_script:
   # Run test files via py.test and generate JUnit XML. Then push test results
